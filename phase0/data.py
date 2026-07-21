@@ -6,8 +6,16 @@ which word was said. It's the "MNIST of audio" — small enough to train on
 a laptop, real enough to learn from.
 
 torchaudio downloads and extracts it automatically (~2.3 GB) on first use.
+
+Note: we read the WAV files with `soundfile` instead of `torchaudio.load`,
+because torchaudio 2.9+ delegates decoding to the separate torchcodec
+package (which needs FFmpeg installed). Speech Commands is plain 16 kHz
+PCM WAV, so soundfile handles it with zero extra system dependencies.
 """
 
+from pathlib import Path
+
+import soundfile
 import torch
 import torchaudio
 from torch.utils.data import Dataset
@@ -45,13 +53,17 @@ class KeywordDataset(Dataset):
         return len(self.dataset)
 
     def __getitem__(self, idx: int):
-        waveform, sample_rate, label, _speaker, _utt = self.dataset[idx]
+        # get_metadata gives us the file path and label without decoding
+        # audio through torchaudio; we decode with soundfile ourselves.
+        relpath, sample_rate, label, _speaker, _utt = self.dataset.get_metadata(idx)
         assert sample_rate == SAMPLE_RATE, f"unexpected sample rate {sample_rate}"
+        audio, _ = soundfile.read(
+            Path(self.dataset._archive) / relpath, dtype="float32"
+        )
+        waveform = torch.from_numpy(audio)
 
-        # waveform arrives as shape (channels=1, num_samples). Drop the
-        # channel dim and force the length to exactly 1 second: some clips
-        # are slightly shorter, and batching requires equal lengths.
-        waveform = waveform.squeeze(0)
+        # Force the length to exactly 1 second: some clips are slightly
+        # shorter, and batching requires equal lengths.
         if waveform.numel() < CLIP_SAMPLES:
             waveform = torch.nn.functional.pad(
                 waveform, (0, CLIP_SAMPLES - waveform.numel())
