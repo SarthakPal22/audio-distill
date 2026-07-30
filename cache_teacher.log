@@ -1,0 +1,5 @@
+device: mps
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/203 [00:00<?, ?it/s]Loading weights: 100%|██████████| 203/203 [00:00<00:00, 5587.34it/s]
+/opt/homebrew/Cellar/python@3.13/3.13.2/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/resource_tracker.py:277: UserWarning: resource_tracker: There appear to be 27 leaked semaphore objects to clean up at shutdown: {'/mp-i6wjgt2q', '/mp-z11plxia', '/mp-z2p046e7', '/mp-mp9opx21', '/mp-55lhrhdy', '/mp-j4tt2e9j', '/mp-vd_jszou', '/mp-yhh9lm8y', '/mp-c2e5zuj7', '/mp-90ohx3yv', '/mp-lt94m338', '/mp-eaem4l8b', '/mp-eiym4ihn', '/mp-qreb68cm', '/mp-8qg_ykmt', '/mp-9i2or6o0', '/mp-k_gt0w5t', '/mp-rtbtkfzu', '/mp-jkwm9hcf', '/mp-2gicnpjk', '/mp-ibazlxmw', '/mp-4wf_53cg', '/mp-92fn7f96', '/mp-rzcc7cz9', '/mp-crtfnpbz', '/mp-y5fa16hr', '/mp-76onucs0'}
+  warnings.warn(
