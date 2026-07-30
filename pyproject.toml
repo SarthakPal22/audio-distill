@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audio-distill"
+version = "0.2.0"
+description = "Knowledge distillation for audio models: compressing an 86M-parameter Audio Spectrogram Transformer into sub-megabyte keyword-spotting students"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.2",
+    "torchaudio>=2.2",
+    "transformers>=4.44",
+    "soundfile",
+    "numpy",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+deploy = ["onnx", "onnxruntime"]
+demo = ["fastapi", "uvicorn", "sounddevice", "python-multipart"]
+analysis = ["matplotlib"]
+dev = ["pytest", "onnx", "onnxruntime", "matplotlib"]
+
+[tool.setuptools]
+packages = ["phase0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
